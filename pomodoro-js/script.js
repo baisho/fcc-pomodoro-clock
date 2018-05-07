@@ -23,10 +23,23 @@ document.getElementById("breakMinus").addEventListener("click", function () {
     inject();
 });
 
-document.getElementById("breakPlus").addEventListener("click", longClick() {
+document.getElementById("breakPlus").addEventListener("click", function () {
     breakLength += 1;
     inject();
 });
+
+document.getElementById("breakPlus").addEventListener("mousedown", function() {
+    loopthis = setInterval(repeatingfunction, 200);
+});
+
+document.getElementById("breakPlus").addEventListener("mouseup", function() {
+    clearInterval(loopthis);
+});
+
+function repeatingfunction() {
+    breakLength += 1;
+    inject();
+}
 
 function inject() {
     document.getElementById("sessionSet").innerHTML = sessionLength;
@@ -35,24 +48,3 @@ function inject() {
 
 inject();
 
-function longClick() {
-    mouse = false;
-    function mousedown() {
-        mouse = true;
-        callEvent();
-    }
-    function mouseup() {
-        mouse = false;
-    }
-    function callEvent() {
-        if (mouse) {
-            // do whatever you want
-            // it will continue executing until mouse is not released
-
-
-            setTimeout("callEvent()", 1);
-        }
-        else
-            return;
-    }
-}
