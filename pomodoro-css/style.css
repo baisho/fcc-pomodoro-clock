@@ -1,0 +1,29 @@
+.flex {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.flex--column {
+    flex-direction: column;
+}
+
+.flex--center {
+    justify-content: center;
+    align-items: center;
+}
+
+.text--center {
+    text-align: center;
+}
+
+.setting__item {
+    padding: 1rem;
+}
+
+.setting__item-button {
+    margin: 1rem;
+}
+
+.feedback__item {
+    margin: 1rem;
+}
