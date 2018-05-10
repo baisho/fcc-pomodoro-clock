@@ -1,8 +1,9 @@
 
 var session = true;
 var clickCounter = 0;
+var sessionButtonClickCounter = 0;
 var sessionLength = 0.1;
-var breakLength = 0.2;
+var breakLength = 1;
 var sectionLength = 0;
 var sectionName = "";
 var loopThis = 0;
@@ -23,16 +24,27 @@ document.getElementById("sessionPlus").addEventListener("mousedown", function ()
 });
 
 function adding1ToSession() {
-    // Everytime the countdown is not stopped
-    if (clickCounter % 2 == 1) {
-        clickCounter = 1;
-        console.log("cC fent:" + clickCounter);
+    if (session) {
+        // Everytime the countdown is not stopped
+        if (clickCounter % 2 == 1) {
+            clickCounter = 1;
+            console.log("cC fent:" + clickCounter);
+        }
+        // Everytime the countdown is stopped
+        else if (clickCounter % 2 == 0) {
+            clickCounter = 0;
+            //rememberTimeLeftVal = 0;
+            sessionLength += 1;
+            sessionButtonClickCounter++;
+            //inject();
+            injectSessionLength();
+            injectSectionLength();
+            console.log(session);
+            console.log(sessionLength);
+        }
     }
-    // Everytime the countdown is stopped
-    else if (clickCounter % 2 == 0) {
-        clickCounter = 0;
-        sessionLength += 1;
-        inject();
+    else if (!session) {
+        return;
     }
 }
 
@@ -47,20 +59,31 @@ document.getElementById("sessionMinus").addEventListener("mousedown", function (
 });
 
 function substracting1FromSession() {
-    // Everytime the countdown is not stopped
-    if (clickCounter % 2 == 1) {
-        clickCounter = 1;
-        console.log("cC fent:" + clickCounter);
-    }
-    // Everytime the countdown is stopped
-    else if (clickCounter % 2 == 0) {
-        clickCounter = 0;
-        sessionLength -= 1;
-        // sessionLength cannot be less then one
-        if (sessionLength <= 1) {
-            sessionLength = 1;
+    if (session) {
+        // Everytime the countdown is not stopped
+        if (clickCounter % 2 == 1) {
+            clickCounter = 1;
+            console.log("cC fent:" + clickCounter);
         }
-        inject();
+        // Everytime the countdown is stopped
+        else if (clickCounter % 2 == 0) {
+            clickCounter = 0;
+            sessionButtonClickCounter++;
+            //rememberTimeLeftVal = 0;
+            sessionLength -= 1;
+            // sessionLength cannot be less then one
+            if (sessionLength <= 1) {
+                sessionLength = 1;
+            }
+            //inject();
+            injectSessionLength();
+            injectSectionLength();
+            console.log(session);
+            console.log(sessionLength);
+        }
+    }
+    else if (!session) {
+        return;
     }
 }
 
@@ -82,9 +105,23 @@ function adding1ToBreak() {
     }
     // Everytime the countdown is stopped
     else if (clickCounter % 2 == 0) {
-        clickCounter = 0;
+        //clickCounter = 0;
+        if (session) {
+            //clickCounter = 2;
+            if (sessionButtonClickCounter = 0) {
+                clickCounter = 2;
+            }
+            else if (sessionButtonClickCounter > 0) {
+                clickCounter = 0;
+            }
+        }
         breakLength += 1;
-        inject();
+        //inject();
+        injectBreakLength();
+        if (!session) {
+            clickCounter = 0;
+            injectSectionLength();
+        }
     }
 }
 
@@ -106,13 +143,27 @@ function substracting1FromBreak() {
     }
     // Everytime the countdown is stopped
     else if (clickCounter % 2 == 0) {
-        clickCounter = 0;
+        //clickCounter = 0;
+        if (session) {
+            //clickCounter = 2;
+            if (sessionButtonClickCounter = 0) {
+                clickCounter = 2;
+            }
+            else if (sessionButtonClickCounter > 0) {
+                clickCounter = 0;
+            }
+        }//itt
         breakLength -= 1;
         // breakLength cannot be less then one
         if (breakLength <= 1) {
             breakLength = 1;
         }
-        inject();
+        //inject();
+        injectBreakLength();
+        if (!session) {
+            clickCounter = 0;
+            injectSectionLength();
+        }
     }
 }
 
@@ -133,8 +184,39 @@ function inject() {
     document.getElementById("sectionValue").innerHTML = sectionLength;
 }
 
+function injectSessionLength() {
+    document.getElementById("sessionSet").innerHTML = sessionLength;
+}
+
+function injectBreakLength() {
+    document.getElementById("breakSet").innerHTML = breakLength;
+}
+
+function injectSectionName() {
+    sessionOrBreak();
+    document.getElementById("sectionTitle").innerHTML = sectionName;
+}
+
+function injectSectionLength() {
+    sessionOrBreak();
+    document.getElementById("sectionValue").innerHTML = sectionLength;
+    /*if (clickCounter > 1) {
+        //endTimeVal = currentTime1Val + rememberTimeLeftVal;
+        document.getElementById("sectionValue").innerHTML = rememberTimeLeftVal;
+
+    }*/
+}
+
+function injectAll() {
+    injectSectionLength();
+    injectBreakLength();
+    injectSectionName();
+    injectSessionLength();
+}
+
 // Calling inject() when the page is loaded.
-inject();
+injectAll();
+//inject();
 
 
 // Starting the session by clicking on time.
@@ -168,7 +250,9 @@ function rememberTimeLeft() {
 
 
 function showTime() {
-    inject();
+    //inject();
+    injectSectionName();
+    //injectSectionLength();
     console.log("showtime vagyok");
     clickCounter++;
     console.log("clickCounter: " + clickCounter);
@@ -224,14 +308,15 @@ function countDown() {
     }
 
     // If the count down is finished, write some text 
-    if (distance <= 0) {
+    if (distance <= 100) {
         atvaltasszamolo++;
-        console.log("atvaltasszamolo: "+atvaltasszamolo);
-        console.log("distance <= 0 eleje: "+session);
+        sessionButtonClickCounter = 0;
+        console.log("atvaltasszamolo: " + atvaltasszamolo);
+        console.log("distance <= 0 eleje: " + session);
         stopIt();
         if (session) {
             session = false;
-        } 
+        }
         else if (!session) {
             session = true;
         }
@@ -245,19 +330,20 @@ function countDown() {
             sectionName = "Session";
         }*/
         clickCounter = 0;
-        console.log("distance <= 0 vége: "+session);
+        console.log("distance <= 0 vége: " + session);
         console.log(sectionName);
-        console.log("cC after distance < 0: "+clickCounter);
+        console.log("cC after distance < 0: " + clickCounter);
         showTime();
+        return;
     }
 }
 
 function sessionOrBreak() {
-    console.log("sessionOrBreak funkció eleje: "+session);
+    console.log("sessionOrBreak funkció eleje: " + session);
     if (session) {
         sectionLength = sessionLength;
         sectionName = "Session";
-    } 
+    }
     else if (!session) {
         sectionLength = breakLength;
         sectionName = "Break";
@@ -271,5 +357,5 @@ function stopIt() {
 
 
 
-console.log("betöltésnél valsz: "+session);
-console.log("atvaltasszamolo: "+atvaltasszamolo);
+console.log("betöltésnél valsz: " + session);
+console.log("atvaltasszamolo: " + atvaltasszamolo);
