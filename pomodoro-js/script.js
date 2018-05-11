@@ -13,6 +13,7 @@ var currentTime2Val = 0;
 var endTimeVal = 0;
 var rememberTimeLeftVal = 0;
 var volumeUp = true;
+var audio5sec = document.getElementById("5sec");
 
 
 // Adding 1 to session time
@@ -225,8 +226,7 @@ function showTime() {
         sessionOrBreak();
         currentTime1();
         endTime();
-        var audio5sec = document.getElementById('5sec');
-        if (!audio5sec.paused || audio5sec.currentTime) {
+        if (audio5sec.paused && audio5sec.currentTime > 0) {
             play5sec();
         }
         // Update the countdown every 0.1 second by setInterval
@@ -237,8 +237,7 @@ function showTime() {
         sessionOrBreak();
         currentTime2();
         rememberTimeLeft();
-        var audio5sec = document.getElementById('5sec');
-        if (!audio5sec.paused || audio5sec.currentTime) {
+        if (!audio5sec.paused) {
             pause5sec();
         }
         // Stop the countdown
@@ -288,6 +287,8 @@ function countDown() {
         }
         clickCounter = 0;
         showTime();
+        pause5sec();
+        audio5sec.currentTime = 0;
         return;
     }
 
@@ -317,27 +318,80 @@ function stopIt() {
 
 // Function to play 5sec.mp3 audio file
 function play5sec() {
-    document.getElementById("5sec").play();
+    audio5sec.play();
 }
 
 // Function to pause 5sec.mp3 audio file
 function pause5sec() {
-    document.getElementById("5sec").pause();
+    audio5sec.pause();
 }
 
+
+// If volumeSymbol is clicked toggleSoundOnAndOff function is called
 document.getElementById("volumeSymbol").addEventListener("click", toggleSoundOnAndOff);
 
+// Function to change the symbol and the mute of sound
 function toggleSoundOnAndOff() {
 
     if (volumeUp) {
         document.getElementById("volumeUp").classList.add("hidden");
         document.getElementById("volumeOff").classList.remove("hidden");
-        document.getElementById("5sec").muted = true;
+        audio5sec.muted = true;
         volumeUp = false;
     } else if (!volumeUp) {
         document.getElementById("volumeUp").classList.remove("hidden");
         document.getElementById("volumeOff").classList.add("hidden");
-        document.getElementById("5sec").muted = false;
+        audio5sec.muted = false;
         volumeUp = true;
     }
 }
+
+// Snippet for modifying ::after elements in CSS
+/*(function(){a={_b:0,c:function(){this._b++;return this.b;}};HTMLElement.prototype.pseudoStyle=function(d,e,f){var g="pseudoStyles";var h=document.head||document.getElementsByTagName('head')[0];var i=document.getElementById(g)||document.createElement('style');i.id=g;var j="pseudoStyle"+a.c();this.className+=" "+j;i.innerHTML+=" ."+j+":"+d+"{"+e+":"+f+"}";h.appendChild(i);return this;};})();*/
+
+var UID = {
+    _current: 0,
+    getNew: function () {
+        this._current++;
+        return this._current;
+    }
+};
+
+HTMLElement.prototype.pseudoStyle = function (element, prop, value) {
+    var _this = this;
+    var _sheetId = "pseudoStyles";
+    var _head = document.head || document.getElementsByTagName('head')[0];
+    var _sheet = document.getElementById(_sheetId) || document.createElement('style');
+    _sheet.id = _sheetId;
+    var className = "pseudoStyle" + UID.getNew();
+
+    _this.className += " " + className;
+
+    _sheet.innerHTML += " ." + className + "::" + element + "{" + prop + ":" + value + "%}";
+    _head.appendChild(_sheet);
+    
+    return this;
+};
+
+var div = document.getElementById("feedbackBlock");
+div.pseudoStyle("after","height",50);
+
+
+// Function move
+function move() {
+    var height = 0;
+    var div = document.getElementById("feedbackBlock");
+    div.pseudoStyle("after","height",height);
+    var id = setInterval(frame, 300);
+    function frame() {
+        var div = document.getElementById("feedbackBlock");
+        div.pseudoStyle("after","height",height);
+        if (height == 100) {
+            clearInterval(id);
+        } else {
+            height++;
+        }
+    }
+}
+
+move();
