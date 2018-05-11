@@ -33,3 +33,15 @@ body {
 .feedback__item {
     margin: 1rem;
 }
+
+.audio__toggle {
+    height: 0.5rem;
+    width: 2rem;
+    background-color: blue;
+    border: 1px black solid;
+    border-radius: 0.5rem;
+}
+
+.hidden {
+    display: none;
+}
