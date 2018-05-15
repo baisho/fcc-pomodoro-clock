@@ -12,8 +12,12 @@ var currentTime1Val = 0;
 var currentTime2Val = 0;
 var endTimeVal = 0;
 var rememberTimeLeftVal = 0;
+var countTo10 = 0;
+var distance = 0;
+var heightVal = 0;
 var volumeUp = true;
 var audio5sec = document.getElementById("5sec");
+document.getElementById("feedback-fillingBackgroundPanel").style.height = 0;
 
 
 // Adding 1 to session time
@@ -33,7 +37,8 @@ function adding1ToSession() {
         }
         // Everytime the countdown is stopped
         else if (clickCounter % 2 == 0) {
-            clickCounter = 0;
+            clickCounter = 0; 
+            countTo10 = 0;
             sessionLength++;
             sessionButtonClickCounter++;
             injectSessionLength();
@@ -64,6 +69,7 @@ function substracting1FromSession() {
         // Everytime the countdown is stopped
         else if (clickCounter % 2 == 0) {
             clickCounter = 0;
+            countTo10 = 0;
             sessionButtonClickCounter++;
             sessionLength--;
             // sessionLength cannot be less then one
@@ -102,12 +108,14 @@ function adding1ToBreak() {
             }
             else if (sessionButtonClickCounter > 0) {
                 clickCounter = 0;
+                countTo10 = 0;
             }
         }
         breakLength++;
         injectBreakLength();
         if (!session) {
             clickCounter = 0;
+            countTo10 = 0;
             injectSectionLength();
         }
     }
@@ -136,6 +144,7 @@ function substracting1FromBreak() {
             }
             else if (sessionButtonClickCounter > 0) {
                 clickCounter = 0;
+                countTo10 = 0;
             }
         }
         breakLength--;
@@ -146,6 +155,7 @@ function substracting1FromBreak() {
         injectBreakLength();
         if (!session) {
             clickCounter = 0;
+            countTo10 = 0;
             injectSectionLength();
         }
     }
@@ -190,7 +200,7 @@ injectAll();
 
 
 // Starting the session by clicking on time
-document.getElementById("sectionValue").addEventListener("click", showTime);
+document.getElementById("feedback-sectionPanel").addEventListener("click", showTime);
 
 
 // Functions for calculating and keeping track of time
@@ -248,8 +258,10 @@ function showTime() {
 // Function for running in every seconds, thus making a countdown
 function countDown() {
     var now = Date.now();
+    countTo10++;
+    console.log(countTo10);
     // Find the distance between start and the end
-    var distance = endTimeVal - now;
+    distance = endTimeVal - now;
 
     // Time calculations for hours, minutes and seconds
     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -275,9 +287,19 @@ function countDown() {
         document.getElementById("sectionValue").innerHTML = minutes + ":" + seconds;
     }
 
+    if (countTo10 % 10 == 0) {
+        var wholeHere = sectionLength * 60 * 1000;
+        var partHere = wholeHere - distance;
+        console.log("partHere: " + partHere + " wholeHere: " + wholeHere);
+        increaseBackground(partHere, wholeHere);
+    }
+
+
     // If the countdown is finished, stop the current one and change for the next session
     if (distance <= 100) {
         sessionButtonClickCounter = 0;
+        heightVal = 0;
+        countTo10 = 0;
         stopIt();
         if (session) {
             session = false;
@@ -286,6 +308,7 @@ function countDown() {
             session = true;
         }
         clickCounter = 0;
+        countTo10 = 0;
         showTime();
         pause5sec();
         audio5sec.currentTime = 0;
@@ -346,52 +369,22 @@ function toggleSoundOnAndOff() {
     }
 }
 
-// Snippet for modifying ::after elements in CSS
-/*(function(){a={_b:0,c:function(){this._b++;return this.b;}};HTMLElement.prototype.pseudoStyle=function(d,e,f){var g="pseudoStyles";var h=document.head||document.getElementsByTagName('head')[0];var i=document.getElementById(g)||document.createElement('style');i.id=g;var j="pseudoStyle"+a.c();this.className+=" "+j;i.innerHTML+=" ."+j+":"+d+"{"+e+":"+f+"}";h.appendChild(i);return this;};})();*/
 
-var UID = {
-    _current: 0,
-    getNew: function () {
-        this._current++;
-        return this._current;
-    }
-};
-
-HTMLElement.prototype.pseudoStyle = function (element, prop, value) {
-    var _this = this;
-    var _sheetId = "pseudoStyles";
-    var _head = document.head || document.getElementsByTagName('head')[0];
-    var _sheet = document.getElementById(_sheetId) || document.createElement('style');
-    _sheet.id = _sheetId;
-    var className = "pseudoStyle" + UID.getNew();
-
-    _this.className += " " + className;
-
-    _sheet.innerHTML += " ." + className + "::" + element + "{" + prop + ":" + value + "%}";
-    _head.appendChild(_sheet);
-    
-    return this;
-};
-
-var div = document.getElementById("feedbackBlock");
-div.pseudoStyle("after","height",50);
-
-
-// Function move
-function move() {
+// Function to increase the background of feedback__fillingBackgroundPanel
+function increaseBackground(part, whole) {
     var height = 0;
-    var div = document.getElementById("feedbackBlock");
-    div.pseudoStyle("after","height",height);
-    var id = setInterval(frame, 300);
-    function frame() {
-        var div = document.getElementById("feedbackBlock");
-        div.pseudoStyle("after","height",height);
-        if (height == 100) {
-            clearInterval(id);
-        } else {
-            height++;
-        }
+    var elem = document.getElementsByClassName("feedback__fillingBackgroundPanel")[0];
+    if (height == 100) {
+        height = 0;
+    } else {
+        height = (part / whole) * 100;
+        elem.style.height = height + '%';
     }
 }
 
-move();
+if (clickCounter == 0) {
+    countTo10 = 0;
+}
+
+console.log("clickCounter: " + clickCounter);
+console.log("countTo10: " + countTo10);

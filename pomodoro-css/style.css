@@ -18,6 +18,10 @@ body {
     align-items: center;
 }
 
+.flex--nowrap {
+    flex-wrap: nowrap;
+}
+
 .flex--end {
     align-items: flex-end;
     align-content: flex-end;
@@ -36,32 +40,44 @@ body {
     margin: 1rem;
 }
 
-
-
 .feedback {
-    background-color: transparent;
     border: 1px black solid;
-    border-radius: 100rem;
-    max-width: 14rem;
-    height: 14rem;
-    margin: 1rem auto;
-    position: relative;
 }
 
-.feedback::after {
-    content: "";
-    opacity: 0.99;
-    background-color: skyblue;
-    border-radius: 100rem;
-    margin: 0rem;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+.feedback--positionRelative {
+    position: relative;
+    height: 15rem;
+}
+
+.feedback--positionAbsolute {
     position: absolute;
-    /*height: 100%;*/
-    width: 100%;
-    z-index: -1;
+    width: 15rem;
+    height: 15rem;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.feedback__fillingBackgroundPanel {
+    border: 1px green solid;
+    background: rgba(141, 78, 78, 0.5);
+    max-height: 100%;
+}
+
+.feedback__coverPanel {
+    border: 1px red solid;
+    background: radial-gradient(transparent 7.5rem, rgba(0,0,0,1) 0);/*
+    background: -moz-radial-gradient(transparent 150px, rgba(0,0,0,1) 150px);
+    background: -webkit-radial-gradient(transparent 150px, rgba(0,0,0,1) 150px);
+    background: -ms-radial-gradient(transparent 150px, rgba(0,0,0,1) 150px);
+    background: -o-radial-gradient(transparent 150px, rgba(0,0,0,1) 150px);*/
+    pointer-events: none; /* send mouse events beneath this layer */
+
+}
+
+.feedback__sectionPanel {
+    border: 1px blue solid;
+    border-radius: 100rem;
 }
 
 .feedback__item {
@@ -75,28 +91,4 @@ body {
 
 .hidden {
     display: none;
-}
-
-#ez {
-    background-color: transparent;
-    border: 1px black solid;
-    border-radius: 100rem;
-    width: 14rem;
-    height: 14rem;
-    margin: 1rem auto;
-    position: relative;
-}
-
-#az {
-    background-color: skyblue;
-    /*border-radius: 100rem;*/
-    margin: 0rem;
-    top: 1000;
-    left: 800;
-    bottom: 0;
-    right: 100;
-    position: absolute;
-    height: 15rem;
-    width: 15rem;
-    z-index: -1;
 }

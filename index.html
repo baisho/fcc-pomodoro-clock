@@ -17,7 +17,7 @@
         <div class="setting flex flex--center">
             <div class="setting__item flex--column">
                 <p class="setting__item-text text--center">Session length</p>
-                <div class="setting__item-setbox flex">
+                <div class="setting__item-setbox flex flex--nowrap">
                     <button id="sessionMinus" class="setting__item-button">-</button>
                     <p id="sessionSet" class="setting__item-value">0</p>
                     <button id="sessionPlus" class="setting__item-button">+</button>
@@ -25,7 +25,7 @@
             </div>
             <div class="setting__item flex--column">
                 <p class="setting__item-text text--center">Break length</p>
-                <div class="setting__item-setbox flex">
+                <div class="setting__item-setbox flex flex--nowrap">
                     <button id="breakMinus" class="setting__item-button">-</button>
                     <p id="breakSet" class="setting__item-value">0</p>
                     <button id="breakPlus" class="setting__item-button">+</button>
@@ -33,13 +33,25 @@
             </div>
         </div>
 
-        <div id="feedbackBlock" class="feedback flex flex--column flex--center">
+        <div class="feedback flex flex--center">
 
-            <div id="sectionTitle" class="feedback__item">
-                Section
-            </div>
-            <div id="sectionValue" class="feedback__item">
-                Value
+            <div class="feedback--positionRelative">
+
+                <div id="feedback-fillingBackgroundPanel" class="feedback__fillingBackgroundPanel feedback--positionAbsolute">
+                </div>
+
+                <div class="feedback__coverPanel feedback--positionAbsolute">
+                </div>
+
+                <div id="feedback-sectionPanel" class="feedback__sectionPanel feedback--positionAbsolute flex flex--column flex--center">
+                    <div id="sectionTitle" class="feedback__item">
+                        Section
+                    </div>
+                    <div id="sectionValue" class="feedback__item">
+                        Value
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -52,12 +64,6 @@
                 <i id="volumeUp" class="fas fa-volume-up"></i>
                 <i id="volumeOff" class="fas fa-volume-off hidden"></i>
             </div>
-        </div>
-
-        <div class="ezek">
-            <div id="ez"><div id="az"></div></div>
-            
-
         </div>
 
     </div>
