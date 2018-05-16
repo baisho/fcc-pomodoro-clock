@@ -18,6 +18,8 @@ var heightVal = 0;
 var volumeUp = true;
 var audio5sec = document.getElementById("5sec");
 document.getElementById("feedback-fillingBackgroundPanel").style.height = 0;
+document.getElementsByClassName("feedback__fillingBackgroundPanel")[0].style.background = "#99CC00";
+
 
 
 // Adding 1 to session time
@@ -37,7 +39,7 @@ function adding1ToSession() {
         }
         // Everytime the countdown is stopped
         else if (clickCounter % 2 == 0) {
-            clickCounter = 0; 
+            clickCounter = 0;
             countTo10 = 0;
             sessionLength++;
             sessionButtonClickCounter++;
@@ -259,7 +261,6 @@ function showTime() {
 function countDown() {
     var now = Date.now();
     countTo10++;
-    console.log(countTo10);
     // Find the distance between start and the end
     distance = endTimeVal - now;
 
@@ -286,22 +287,33 @@ function countDown() {
     else {
         document.getElementById("sectionValue").innerHTML = minutes + ":" + seconds;
     }
-
+    
     if (countTo10 % 10 == 0) {
+        var elem = document.getElementsByClassName("feedback__fillingBackgroundPanel")[0];
+        
+        if (session) {
+            elem.style.background = "#99CC00";
+        } else if (!session) {
+            elem.style.background = "#FF4444";
+        }
         var wholeHere = sectionLength * 60 * 1000;
         var partHere = wholeHere - distance;
-        console.log("partHere: " + partHere + " wholeHere: " + wholeHere);
         increaseBackground(partHere, wholeHere);
     }
 
 
     // If the countdown is finished, stop the current one and change for the next session
+    /*if (distance <= 11) {*/
+
+
     if (distance <= 100) {
         sessionButtonClickCounter = 0;
         heightVal = 0;
         countTo10 = 0;
         stopIt();
         if (session) {
+            pause5sec();
+            audio5sec.currentTime = 0;
             session = false;
         }
         else if (!session) {
@@ -312,7 +324,13 @@ function countDown() {
         showTime();
         pause5sec();
         audio5sec.currentTime = 0;
+        var elem = document.getElementsByClassName("feedback__fillingBackgroundPanel")[0];
+        elem.style.height = '0%';
         return;
+    }
+    if (distance <= 1000) {
+        var elem = document.getElementsByClassName("feedback__fillingBackgroundPanel")[0];
+        elem.style.height = '100%';
     }
 
     if (distance <= 6100) {
@@ -369,7 +387,6 @@ function toggleSoundOnAndOff() {
     }
 }
 
-
 // Function to increase the background of feedback__fillingBackgroundPanel
 function increaseBackground(part, whole) {
     var height = 0;
@@ -381,10 +398,3 @@ function increaseBackground(part, whole) {
         elem.style.height = height + '%';
     }
 }
-
-if (clickCounter == 0) {
-    countTo10 = 0;
-}
-
-console.log("clickCounter: " + clickCounter);
-console.log("countTo10: " + countTo10);

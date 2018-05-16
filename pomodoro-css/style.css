@@ -1,7 +1,10 @@
 body {
     max-width: 100%;
     margin: 0rem;
-    box-sizing: border-box;
+    box-sizing: content-box;
+    background-color: #333333;
+    font-family: 'PT Sans', sans-serif;
+    color: white;
 }
 
 .flex {
@@ -38,10 +41,21 @@ body {
 
 .setting__item-button {
     margin: 1rem;
+    background: transparent/*#99CC00*/;
+    border: 0px white solid;
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 1rem;
+    color: white;
 }
 
+.setting__item-button:focus {
+    outline: none;
+  }
+
 .feedback {
-    border: 1px black solid;
+    padding-top: 0.5rem;
+    height: 16rem; 
 }
 
 .feedback--positionRelative {
@@ -59,30 +73,26 @@ body {
 }
 
 .feedback__fillingBackgroundPanel {
-    border: 1px green solid;
-    background: rgba(141, 78, 78, 0.5);
-    max-height: 100%;
+    background: #99CC00;
+    z-index: 1;
 }
 
 .feedback__coverPanel {
-    border: 1px red solid;
-    background: radial-gradient(transparent 7.5rem, rgba(0,0,0,1) 0);/*
-    background: -moz-radial-gradient(transparent 150px, rgba(0,0,0,1) 150px);
-    background: -webkit-radial-gradient(transparent 150px, rgba(0,0,0,1) 150px);
-    background: -ms-radial-gradient(transparent 150px, rgba(0,0,0,1) 150px);
-    background: -o-radial-gradient(transparent 150px, rgba(0,0,0,1) 150px);*/
-    pointer-events: none; /* send mouse events beneath this layer */
-
+    background: radial-gradient(transparent 7.49rem, rgba(51,51,51,1) 0);
+    z-index: 2;
 }
 
 .feedback__sectionPanel {
-    border: 1px blue solid;
-    border-radius: 100rem;
+    box-sizing: border-box;
+    border: 3px #99CC00 solid;
+    border-radius: 50%;
+    z-index: 4;
 }
 
 .feedback__item {
     margin: 1rem;
-    z-index: 2;
+    font-family: "Orbitron";
+    font-size: 1.5rem;
 }
 
 .audio {
